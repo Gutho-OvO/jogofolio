@@ -4,12 +4,12 @@ const player = {
     y: 0,
     width: 32,
     height: 32,
-    speed: 0.5, // Será ajustado dinamicamente pelo camera.js
+    speed: 2.0, // Velocidade base - será ajustada dinamicamente
 
     direction: "down",
     frame: 0,
     frameTimer: 0,
-    frameDelay: 25, // Será ajustado dinamicamente pelo camera.js
+    frameDelay: 10, // Frame delay base - será ajustado dinamicamente
     moving: false
 };
 

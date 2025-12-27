@@ -33,16 +33,25 @@ function calculateZoom() {
       }
     }
   } else {
-    // Desktop: zoom baseado na resolução
-    ZOOM = 4;
+    // Desktop: zoom baseado na resolução para manter experiência consistente
+    // Seu monitor: 3440x1440 = área de ~4.9M pixels → ZOOM 4
+    // Notebook: 1920x1080 = área de ~2M pixels → ZOOM ajustado
+    
+    const pixelArea = screenWidth * screenHeight;
+    const referenceArea = 3440 * 1440; // Seu monitor principal
+    const areaRatio = Math.sqrt(pixelArea / referenceArea);
+    
+    // ZOOM varia entre 3 e 4.5 baseado na resolução
+    ZOOM = 4 / areaRatio;
+    ZOOM = Math.max(3, Math.min(4.5, ZOOM)); // Limita entre 3 e 4.5
   }
   
-  // Calcula o fator de escala baseado no ZOOM
-  // ZOOM 4 (padrão) = escala 1.0
-  // ZOOM menor = escala menor = velocidade MAIOR
-  SCALE_FACTOR = 4 / ZOOM; // INVERTIDO! Quanto menor o zoom, menor a escala
+  // SCALE_FACTOR agora representa o quanto mais rápido tudo deve ser
+  // ZOOM maior = tela menor = precisa compensar com velocidade maior
+  SCALE_FACTOR = ZOOM / 4; // Inverte a lógica anterior
   
-  console.log("ZOOM:", ZOOM, "| SCALE_FACTOR:", SCALE_FACTOR.toFixed(2));
+  console.log("Resolução:", screenWidth, "x", screenHeight);
+  console.log("ZOOM:", ZOOM.toFixed(2), "| SCALE_FACTOR:", SCALE_FACTOR.toFixed(2));
 }
 
 // Função resizeCanvas
@@ -56,9 +65,14 @@ function resizeCanvas() {
   
   // Atualiza velocidade do player baseado na escala
   if (player) {
-    const baseSpeed = 0.5; // Velocidade no seu monitor 3440x1440
-    player.speed = baseSpeed * SCALE_FACTOR; // MULTIPLICAR, não dividir
-    player.frameDelay = Math.max(8, Math.round(25 / SCALE_FACTOR)); // Mínimo 8
+    // Velocidade base do seu monitor 3440x1440
+    const baseSpeed = 2.0; // Ajuste este valor se necessário
+    player.speed = baseSpeed * SCALE_FACTOR;
+    
+    // Frame delay inversamente proporcional (quanto menor a tela, mais rápido a animação)
+    const baseFrameDelay = 10; // Ajuste este valor se necessário
+    player.frameDelay = Math.max(5, Math.round(baseFrameDelay / SCALE_FACTOR));
+    
     console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);
   }
 }
