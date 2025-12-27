@@ -32,9 +32,9 @@ function calculateZoom() {
     const referenceArea = 3440 * 1440; // Seu monitor principal
     const areaRatio = Math.sqrt(pixelArea / referenceArea);
     
-    // ZOOM varia entre 3 e 4.5 baseado na resolução
-    ZOOM = 4 / areaRatio;
-    ZOOM = Math.max(3, Math.min(4.5, ZOOM)); // Limita entre 3 e 4.5
+    // ZOOM varia entre 2.7 e 4.2 baseado na resolução (diminuído um pouco)
+    ZOOM = 3.7 / areaRatio; // Era 4 / areaRatio
+    ZOOM = Math.max(2.7, Math.min(4.2, ZOOM)); // Era 3 e 4.5
   }
   
   // SCALE_FACTOR agora representa o quanto mais rápido tudo deve ser

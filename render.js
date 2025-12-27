@@ -422,17 +422,17 @@ function drawComputerScreen() {
     // 🎯 Layout dos ícones - GRID 3x2 (3 na primeira linha, 2 na segunda)
     const isMobile = window.isMobile;
     
-    // Calcula tamanhos dos ícones baseado na tela - DIMINUÍDO MAIS
+    // Calcula tamanhos dos ícones baseado na tela
     let iconSize, iconSpacing, startY;
     
     if (isMobile) {
-        iconSize = Math.min(38, canvas.width * 0.09); // Era 45 e 0.11
+        iconSize = Math.min(55, canvas.width * 0.14); // Aumentado de 38 e 0.09
         iconSpacing = canvas.width * 0.08;
-        startY = canvas.height * 0.18; // Era 0.25 - SUBIU
+        startY = canvas.height * 0.35; // Descido de 0.18
     } else {
-        iconSize = Math.min(50, canvas.width * 0.05); // Era 60 e 0.06
+        iconSize = Math.min(50, canvas.width * 0.05);
         iconSpacing = canvas.width * 0.06;
-        startY = canvas.height * 0.18; // Era 0.3 - SUBIU
+        startY = canvas.height * 0.22;
     }
 
     // Desenha os ícones em formato 3-2
