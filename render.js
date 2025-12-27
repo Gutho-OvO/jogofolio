@@ -216,6 +216,15 @@ function drawUI() {
 
 function drawDialogue() {
     if (!currentDialogue) return;
+    
+    // Pega o texto atual
+    const text = currentDialogue[dialogueIndex];
+    
+    // Se o texto estiver vazio ou só espaços, pula
+    if (!text || text.trim() === "") {
+        console.warn("Texto vazio no índice", dialogueIndex);
+        return;
+    }
 
     const isMobile = window.isMobile;
     const isPortrait = canvas.height > canvas.width;
@@ -226,14 +235,20 @@ function drawDialogue() {
     // Altura do box: maior no mobile portrait
     let boxHeight;
     if (isMobile && isPortrait) {
-        boxHeight = Math.min(140, canvas.height * 0.3); // 30% da altura, máx 140px
+        boxHeight = Math.min(140, canvas.height * 0.3);
     } else if (isMobile) {
-        boxHeight = Math.min(100, canvas.height * 0.25); // 25% no mobile landscape
+        boxHeight = Math.min(100, canvas.height * 0.25);
     } else {
-        boxHeight = Math.min(100, canvas.height * 0.2); // 20% no desktop
+        boxHeight = Math.min(100, canvas.height * 0.2);
     }
     
-    const boxY = canvas.height - boxHeight - padding;
+    // Posição do box: TOPO no mobile, BAIXO no desktop
+    let boxY;
+    if (isMobile) {
+        boxY = padding + 10; // Topo da tela no mobile
+    } else {
+        boxY = canvas.height - boxHeight - padding; // Baixo no desktop
+    }
 
     // Borda branca
     ctx.fillStyle = "white";
@@ -248,56 +263,61 @@ function drawDialogue() {
     // Tamanho da fonte: maior no mobile
     let fontSize;
     if (isMobile && isPortrait) {
-        fontSize = Math.max(14, canvas.height * 0.028); // Maior no mobile vertical
+        fontSize = Math.max(14, canvas.height * 0.028);
     } else if (isMobile) {
-        fontSize = Math.max(12, canvas.height * 0.024); // Mobile horizontal
+        fontSize = Math.max(12, canvas.height * 0.024);
     } else {
-        fontSize = Math.max(10, canvas.height * 0.022); // Desktop
+        fontSize = Math.max(10, canvas.height * 0.022);
     }
     
     ctx.font = `${fontSize}px 'Courier New', monospace`;
     ctx.textAlign = "left";
     
-    const text = currentDialogue[dialogueIndex];
     const maxWidth = canvas.width - (padding * 4);
     
-    // Quebra de linha automática
+    // Quebra de linha automática - MELHORADA
     const words = text.split(' ');
-    let line = '';
-    let y = boxY + padding + fontSize;
-    const lineHeight = fontSize + 4;
-    const maxLines = Math.floor((boxHeight - padding * 2 - 20) / lineHeight); // Espaço para o hint
-    let lineCount = 0;
+    let lines = [];
+    let currentLine = '';
     
-    for (let word of words) {
-        const testLine = line + word + ' ';
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        const testLine = currentLine + (currentLine ? ' ' : '') + word;
         const metrics = ctx.measureText(testLine);
         
-        if (metrics.width > maxWidth && line !== '') {
-            if (lineCount < maxLines) {
-                ctx.fillText(line, padding + 10, y);
-                line = word + ' ';
-                y += lineHeight;
-                lineCount++;
-            } else {
-                // Trunca se passar do limite
-                ctx.fillText(line + '...', padding + 10, y);
-                break;
-            }
+        if (metrics.width > maxWidth && currentLine !== '') {
+            lines.push(currentLine);
+            currentLine = word;
         } else {
-            line = testLine;
+            currentLine = testLine;
         }
     }
     
-    // Última linha
-    if (lineCount < maxLines && line !== '') {
-        ctx.fillText(line, padding + 10, y);
+    // Adiciona a última linha
+    if (currentLine) {
+        lines.push(currentLine);
     }
     
-    // Hint "Aperte E" - posicionado no canto, não sobrepondo o texto
-    const hintSize = Math.max(9, fontSize * 0.7); // 70% do tamanho do texto
+    // Desenha as linhas
+    const lineHeight = fontSize + 4;
+    const maxLines = Math.floor((boxHeight - padding * 2 - 20) / lineHeight);
+    let y = boxY + padding + fontSize;
+    
+    for (let i = 0; i < Math.min(lines.length, maxLines); i++) {
+        ctx.fillText(lines[i], padding + 10, y);
+        y += lineHeight;
+    }
+    
+    // Se tiver mais linhas que o espaço permite, adiciona "..."
+    if (lines.length > maxLines) {
+        const lastVisibleY = boxY + padding + fontSize + (maxLines - 1) * lineHeight;
+        ctx.fillText(lines[maxLines - 1] + '...', padding + 10, lastVisibleY);
+    }
+    
+    // Hint "Aperte E"
+    const hintSize = Math.max(9, fontSize * 0.7);
     ctx.font = `${hintSize}px Arial`;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.8)"; // Levemente transparente
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
     ctx.textAlign = "right";
     
     const hintY = boxY + boxHeight - padding - 5;
