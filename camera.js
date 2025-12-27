@@ -6,11 +6,31 @@ const camera = {
   height: 540
 };
 
-const ZOOM = 4;
+// Zoom ajustável por tamanho de tela
+let ZOOM = 4;
 
+function calculateZoom() {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  
+  if (window.isMobile) {
+    // Mobile: zoom menor para ver mais do mapa
+    if (screenWidth < 400) {
+      ZOOM = 2.5;
+    } else if (screenWidth < 600) {
+      ZOOM = 3;
+    } else {
+      ZOOM = 3.5;
+    }
+  } else {
+    // Desktop: zoom padrão
+    ZOOM = 4;
+  }
+}
 
 // Função resizeCanvas
 function resizeCanvas() {
+  calculateZoom();
   canvas.width = window.innerWidth / ZOOM;
   canvas.height = window.innerHeight / ZOOM;
   camera.width = canvas.width;

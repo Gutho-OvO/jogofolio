@@ -4,7 +4,7 @@ const player = {
     y: 0,
     width: 32,
     height: 32,
-    speed: 0.5,
+    speed: window.isMobile ? 1.2 : 0.5,
 
     direction: "down",
     frame: 0,

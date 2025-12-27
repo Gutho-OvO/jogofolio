@@ -45,7 +45,7 @@ function addMobileStyles() {
             width: 100%;
             height: 200px;
             pointer-events: none;
-            z-index: 999;
+            z-index: 998; /* Abaixo do cinema */
         }
 
         #dpad {
