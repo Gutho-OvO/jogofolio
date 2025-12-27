@@ -38,9 +38,9 @@ function calculateZoom() {
   }
   
   // Calcula o fator de escala baseado no ZOOM
-  // ZOOM 4 (padrão 3440x1440) = escala 1.0
-  // Outros zooms escalam proporcionalmente
-  SCALE_FACTOR = ZOOM / 4;
+  // ZOOM 4 (padrão) = escala 1.0
+  // ZOOM menor = escala menor = velocidade MAIOR
+  SCALE_FACTOR = 4 / ZOOM; // INVERTIDO! Quanto menor o zoom, menor a escala
   
   console.log("ZOOM:", ZOOM, "| SCALE_FACTOR:", SCALE_FACTOR.toFixed(2));
 }
@@ -57,8 +57,8 @@ function resizeCanvas() {
   // Atualiza velocidade do player baseado na escala
   if (player) {
     const baseSpeed = 0.5; // Velocidade no seu monitor 3440x1440
-    player.speed = baseSpeed / SCALE_FACTOR;
-    player.frameDelay = Math.round(25 * SCALE_FACTOR);
+    player.speed = baseSpeed * SCALE_FACTOR; // MULTIPLICAR, não dividir
+    player.frameDelay = Math.max(8, Math.round(25 / SCALE_FACTOR)); // Mínimo 8
     console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);
   }
 }

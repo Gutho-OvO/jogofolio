@@ -36,8 +36,9 @@ function isPlayerNear(p, obj) {
 function update() {
     if (currentDialogue) return; 
 
-    // Velocidade de fade proporcional ao SCALE_FACTOR
-    const fadeSpeed = 0.05 / (SCALE_FACTOR || 1);
+    // Velocidade de fade proporcional e mais rápida no mobile
+    const baseFadeSpeed = window.isMobile ? 0.08 : 0.05;
+    const fadeSpeed = baseFadeSpeed * (SCALE_FACTOR || 1);
 
     // Lógica de Fade do Telescópio
     if (isFading) {
