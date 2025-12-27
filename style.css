@@ -49,18 +49,53 @@ canvas {
     }
 }
 
-/* Ajustes para mobile landscape */
-@media (max-width: 926px) and (orientation: landscape) {
-    #cinemaIframe {
-        width: min(85vw, 151.11vh);
-        height: min(47.8125vw, 85vh);
-    }
+/* Aviso de rotação para mobile landscape */
+#rotateWarning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
 }
 
-/* Ajustes para telas muito pequenas */
-@media (max-height: 600px) {
-    #cinemaIframe {
-        height: 70vh;
-        width: 124.44vh; /* 16:9 de 70vh */
+#rotateWarning .icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: rotate 2s infinite ease-in-out;
+}
+
+#rotateWarning h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#rotateWarning p {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+@keyframes rotate {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+}
+
+/* Mostra o aviso apenas no mobile landscape */
+@media (max-width: 926px) and (orientation: landscape) {
+    #rotateWarning {
+        display: flex;
+    }
+    
+    canvas, #cinemaOverlay {
+        display: none !important;
     }
 }

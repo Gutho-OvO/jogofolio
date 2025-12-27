@@ -13,24 +13,15 @@ let SCALE_FACTOR = 1; // Fator de escala global baseado no zoom
 function calculateZoom() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
-  const isPortrait = screenHeight > screenWidth;
   
   if (window.isMobile) {
-    // Mobile: zoom menor para ver mais do mapa
-    if (isPortrait) {
-      if (screenWidth < 400) {
-        ZOOM = 2;
-      } else if (screenWidth < 600) {
-        ZOOM = 2.3;
-      } else {
-        ZOOM = 2.8;
-      }
+    // Mobile: apenas modo portrait (vertical)
+    if (screenWidth < 400) {
+      ZOOM = 2;
+    } else if (screenWidth < 600) {
+      ZOOM = 2.3;
     } else {
-      if (screenWidth < 600) {
-        ZOOM = 2.8;
-      } else {
-        ZOOM = 3.2;
-      }
+      ZOOM = 2.8;
     }
   } else {
     // Desktop: zoom baseado na resolução para manter experiência consistente
