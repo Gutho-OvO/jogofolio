@@ -49,15 +49,15 @@ function addMobileStyles() {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            width: 150px;
-            height: 150px;
+            width: 210px;
+            height: 210px;
             pointer-events: auto;
         }
 
         .dpad-btn {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 8px;
@@ -75,27 +75,27 @@ function addMobileStyles() {
 
         #btn-up {
             top: 0;
-            left: 60px;
+            left: 70px;
         }
 
         #btn-down {
             bottom: 0;
-            left: 60px;
+            left: 70px;
         }
 
         #btn-left {
-            top: 60px;
+            top: 70px;
             left: 0;
         }
 
         #btn-right {
-            top: 60px;
+            top: 70px;
             right: 0;
         }
 
         #action-buttons {
             position: absolute;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             pointer-events: auto;
         }
