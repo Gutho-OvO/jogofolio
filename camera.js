@@ -7,8 +7,8 @@ const camera = {
 };
 
 // Zoom e escala ajustáveis
-let ZOOM = 3.0;
-let SCALE_FACTOR = 1; // Fator de escala global baseado no zoom
+let ZOOM = 2.0;
+let SCALE_FACTOR = 0; // Fator de escala global baseado no zoom
 
 function calculateZoom() {
   const screenWidth = window.innerWidth;
@@ -33,8 +33,8 @@ function calculateZoom() {
     const areaRatio = Math.sqrt(pixelArea / referenceArea);
     
     // ZOOM varia entre 2.7 e 4.2 baseado na resolução (diminuído um pouco)
-    ZOOM = 3 / areaRatio; // Era 4 / areaRatio
-    ZOOM = Math.max(2, Math.min(3.5, ZOOM)); // Era 3 e 4.5
+    ZOOM = 2 / areaRatio; // Era 4 / areaRatio
+    ZOOM = Math.max(0, Math.min(1.5, ZOOM)); // Era 3 e 4.5
   }
   
   // SCALE_FACTOR agora representa o quanto mais rápido tudo deve ser
