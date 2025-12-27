@@ -57,11 +57,11 @@ function resizeCanvas() {
   // Atualiza velocidade do player baseado na escala
   if (player) {
     // Velocidade base diferente para mobile e desktop
-    const baseSpeed = window.isMobile ? 2.7 : 1.7; // Mobile 50% mais rápido
+    const baseSpeed = window.isMobile ? 2.8 : 1.7; // Mobile 50% mais rápido
     player.speed = baseSpeed * SCALE_FACTOR;
     
     // Frame delay inversamente proporcional (quanto menor a tela, mais rápido a animação)
-    const baseFrameDelay = window.isMobile ? 8 : 12; // Animação mais rápida no mobile
+    const baseFrameDelay = window.isMobile ? 10 : 12; // Animação mais rápida no mobile
     player.frameDelay = Math.max(5, Math.round(baseFrameDelay / SCALE_FACTOR));
     
     console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);

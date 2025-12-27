@@ -332,7 +332,7 @@ const cinemaArea = {
   x: 399,
   y: 115,
   width: 38,
-  height: 8
+  height: 5
 };
 
 const cinemaSpawn = { x: 430, y: 285 };

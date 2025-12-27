@@ -386,13 +386,18 @@ function drawTelescopeView() {
 }
 
 function drawComputerScreen() {
+    // 🎨 Overlay escuro semi-transparente (deixa ver o fundo do jogo)
+    ctx.fillStyle = "rgba(0, 0, 0, 0.85)"; // Preto com 85% de opacidade
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
     // 🖥️ Desenha a imagem de fundo do computador
     if (computerScreenImg.complete) {
-        // Calcula dimensões mantendo proporção
+        // Calcula dimensões mantendo proporção - AUMENTADO MAIS
+        const scaleFactor = 1.3; // Aumenta 30% o tamanho (era 1.15)
         const ratio = Math.min(
             canvas.width / computerScreenImg.width,
             canvas.height / computerScreenImg.height
-        );
+        ) * scaleFactor;
         
         const imgWidth = computerScreenImg.width * ratio;
         const imgHeight = computerScreenImg.height * ratio;
@@ -408,7 +413,7 @@ function drawComputerScreen() {
     ctx.fillStyle = "#ffffff";
     ctx.font = `bold ${hintSize}px Arial`;
     ctx.textAlign = "right";
-    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+    ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
     ctx.shadowBlur = 4;
     const hintText = window.isMobile ? "[E] Fechar" : "Pressione [E] para fechar";
     ctx.fillText(hintText, canvas.width - 15, canvas.height - 15);
@@ -417,17 +422,17 @@ function drawComputerScreen() {
     // 🎯 Layout dos ícones - GRID 3x2 (3 na primeira linha, 2 na segunda)
     const isMobile = window.isMobile;
     
-    // Calcula tamanhos dos ícones baseado na tela
+    // Calcula tamanhos dos ícones baseado na tela - DIMINUÍDO MAIS
     let iconSize, iconSpacing, startY;
     
     if (isMobile) {
-        iconSize = Math.min(60, canvas.width * 0.15);
+        iconSize = Math.min(38, canvas.width * 0.09); // Era 45 e 0.11
         iconSpacing = canvas.width * 0.08;
-        startY = canvas.height * 0.25;
+        startY = canvas.height * 0.18; // Era 0.25 - SUBIU
     } else {
-        iconSize = Math.min(80, canvas.width * 0.08);
+        iconSize = Math.min(50, canvas.width * 0.05); // Era 60 e 0.06
         iconSpacing = canvas.width * 0.06;
-        startY = canvas.height * 0.3;
+        startY = canvas.height * 0.18; // Era 0.3 - SUBIU
     }
 
     // Desenha os ícones em formato 3-2
