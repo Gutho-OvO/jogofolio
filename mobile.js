@@ -56,8 +56,8 @@ function addMobileStyles() {
 
         .dpad-btn {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: rgba(255, 255, 255, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 8px;
@@ -75,21 +75,21 @@ function addMobileStyles() {
 
         #btn-up {
             top: 0;
-            left: 50px;
+            left: 60px;
         }
 
         #btn-down {
             bottom: 0;
-            left: 50px;
+            left: 60px;
         }
 
         #btn-left {
-            top: 50px;
+            top: 60px;
             left: 0;
         }
 
         #btn-right {
-            top: 50px;
+            top: 60px;
             right: 0;
         }
 
