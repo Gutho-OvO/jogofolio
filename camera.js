@@ -28,9 +28,9 @@ function calculateZoom() {
     } else {
       // Modo paisagem (horizontal)
       if (screenWidth < 600) {
-        ZOOM = 2.8;
+        ZOOM = 2.0;
       } else {
-        ZOOM = 3.2;
+        ZOOM = 2.3;
       }
     }
   } else {
