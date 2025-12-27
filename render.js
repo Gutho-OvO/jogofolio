@@ -32,7 +32,7 @@ function draw() {
         // No cinema: desenha fundo preto
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        activeMap = null; // Cadeiras serão desenhadas depois, na parte de baixo
+        activeMap = null;
     }
 
     if (activeMap) {
@@ -49,11 +49,24 @@ function draw() {
         );
     }
 
-    // 🎬 DESENHA CADEIRAS DO CINEMA (na parte inferior, atrás do player)
+    // 🎬 DESENHA CADEIRAS DO CINEMA (proporcional e adaptativo)
     if (currentMap === "cinema" && cinemaSalaImg.complete) {
-        // Cadeiras ocupam a parte inferior da tela (60% de baixo para cima)
-        const chairsStartY = canvas.height * 0.65; // Começa em 60% da altura
-        const chairsHeight = canvas.height - chairsStartY;
+        // Posição das cadeiras baseada na altura do canvas
+        // Desktop (3440x1440 / ZOOM 4) → chairsStartY ≈ 65% 
+        // Mobile → ajusta automaticamente
+        
+        const isMobile = window.isMobile;
+        let chairsStartY, chairsHeight;
+        
+        if (isMobile) {
+            // Mobile: cadeiras na parte inferior (75-80% da tela)
+            chairsStartY = canvas.height * 0.75;
+            chairsHeight = canvas.height - chairsStartY;
+        } else {
+            // Desktop: cadeiras começam em ~65% da altura
+            chairsStartY = canvas.height * 0.65;
+            chairsHeight = canvas.height - chairsStartY;
+        }
         
         // Mantém proporção da imagem
         const ratio = Math.min(
@@ -68,22 +81,24 @@ function draw() {
         ctx.drawImage(cinemaSalaImg, chairsX, chairsStartY, w, h);
     }
 
-    // 2. PLAYER (sempre desenha, inclusive no cinema)
-    const row = directionMap[player.direction];
-    const sx = player.frame * 32;
-    const sy = row * 32;
+    // 2. PLAYER (sempre desenha, DEPOIS das cadeiras, mas só no cinema se necessário)
+    if (currentMap !== "cinema" || (currentMap === "cinema" && cinemaState !== "watching")) {
+        const row = directionMap[player.direction];
+        const sx = player.frame * 32;
+        const sy = row * 32;
 
-    ctx.drawImage(
-        playerImg,
-        sx,
-        sy,
-        32,
-        32,
-        Math.floor(player.x - camX),
-        Math.floor(player.y - camY),
-        32,
-        32
-    );
+        ctx.drawImage(
+            playerImg,
+            sx,
+            sy,
+            32,
+            32,
+            Math.floor(player.x - camX),
+            Math.floor(player.y - camY),
+            32,
+            32
+        );
+    }
 
     if (currentMap === "city") {
         // 3. OBJETOS DO MAPA

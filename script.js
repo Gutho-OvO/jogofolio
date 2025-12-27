@@ -36,17 +36,20 @@ function isPlayerNear(p, obj) {
 function update() {
     if (currentDialogue) return; 
 
+    // Velocidade de fade proporcional ao SCALE_FACTOR
+    const fadeSpeed = 0.05 / (SCALE_FACTOR || 1);
+
     // Lógica de Fade do Telescópio
     if (isFading) {
         if (fadeTarget === "open") {
-            fadeOpacity += 0.05;
+            fadeOpacity += fadeSpeed;
             if (fadeOpacity >= 1) {
                 fadeOpacity = 1;
                 isTelescopeOpen = true; 
                 fadeTarget = "show";
             }
         } else if (fadeTarget === "show" || fadeTarget === "hide") {
-            fadeOpacity -= 0.05;
+            fadeOpacity -= fadeSpeed;
             if (fadeOpacity <= 0) {
                 fadeOpacity = 0;
                 isFading = false;
@@ -58,7 +61,7 @@ function update() {
 
     if (isTelescopeOpen || isComputerOpen) return;
 
-    // 🎬 ENTRADA AUTOMÁTICA NO CINEMA (sem pressionar E)
+    // 🎬 ENTRADA AUTOMÁTICA NO CINEMA
     if (currentMap === "building" && 
         cinemaState === "closed" && 
         isInsideArea(player, cinemaArea)) {
@@ -72,7 +75,6 @@ function update() {
         cinemaOverlay.style.display = "flex";
         cinemaIframe.src = CINEMA_YOUTUBE_URL;
         
-        // Mostra botão de fechar no mobile
         if (window.isMobile && window.toggleCinemaCloseBtn) {
             window.toggleCinemaCloseBtn(true);
         }
@@ -88,7 +90,7 @@ function update() {
 
     if (teleportFading) {
         if (teleportStep === "out") {
-            teleportFadeOpacity += 0.05;
+            teleportFadeOpacity += fadeSpeed;
             if (teleportFadeOpacity >= 1) {
                 teleportFadeOpacity = 1;
                 teleportStep = "wait";
@@ -96,13 +98,15 @@ function update() {
             }
         } else if (teleportStep === "wait") {
             teleportWaitTime++;
-            if (teleportWaitTime >= 180) {
+            // Tempo de espera proporcional
+            const waitFrames = Math.round(180 * (SCALE_FACTOR || 1));
+            if (teleportWaitTime >= waitFrames) {
                 player.x = teleportTarget.x;
                 player.y = teleportTarget.y;
                 teleportStep = "in";
             }
         } else if (teleportStep === "in") {
-            teleportFadeOpacity -= 0.05;
+            teleportFadeOpacity -= fadeSpeed;
             if (teleportFadeOpacity <= 0) {
                 teleportFadeOpacity = 0;
                 teleportFading = false;

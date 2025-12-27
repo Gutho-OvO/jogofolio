@@ -6,18 +6,18 @@ const camera = {
   height: 540
 };
 
-// Zoom ajustável por tamanho de tela
+// Zoom e escala ajustáveis
 let ZOOM = 4;
+let SCALE_FACTOR = 1; // Fator de escala global baseado no zoom
 
 function calculateZoom() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
-  const isPortrait = screenHeight > screenWidth; // Detecta orientação
+  const isPortrait = screenHeight > screenWidth;
   
   if (window.isMobile) {
-    // Mobile: zoom menor para ver mais do mapa e UI maior
+    // Mobile: zoom menor para ver mais do mapa
     if (isPortrait) {
-      // Modo retrato (vertical) - zoom ainda menor para UI maior
       if (screenWidth < 400) {
         ZOOM = 2;
       } else if (screenWidth < 600) {
@@ -26,17 +26,23 @@ function calculateZoom() {
         ZOOM = 2.8;
       }
     } else {
-      // Modo paisagem (horizontal)
       if (screenWidth < 600) {
-        ZOOM = 2.0;
+        ZOOM = 2.8;
       } else {
-        ZOOM = 2.3;
+        ZOOM = 3.2;
       }
     }
   } else {
-    // Desktop: zoom padrão
+    // Desktop: zoom baseado na resolução
     ZOOM = 4;
   }
+  
+  // Calcula o fator de escala baseado no ZOOM
+  // ZOOM 4 (padrão 3440x1440) = escala 1.0
+  // Outros zooms escalam proporcionalmente
+  SCALE_FACTOR = ZOOM / 4;
+  
+  console.log("ZOOM:", ZOOM, "| SCALE_FACTOR:", SCALE_FACTOR.toFixed(2));
 }
 
 // Função resizeCanvas
@@ -47,6 +53,14 @@ function resizeCanvas() {
   camera.width = canvas.width;
   camera.height = canvas.height;
   ctx.imageSmoothingEnabled = false;
+  
+  // Atualiza velocidade do player baseado na escala
+  if (player) {
+    const baseSpeed = 0.5; // Velocidade no seu monitor 3440x1440
+    player.speed = baseSpeed / SCALE_FACTOR;
+    player.frameDelay = Math.round(25 * SCALE_FACTOR);
+    console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);
+  }
 }
 
 window.updateCamera = function() {

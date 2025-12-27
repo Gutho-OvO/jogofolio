@@ -8,7 +8,7 @@ const npcs = [
   { 
     id: "dinamico", x: 1480, y: 655, width: 32, height: 32, 
     imgFront: npc4FrontImg, imgDiag: npc4DiagImg, 
-    dialogue: ["Opa bom dia, tu deve ser novo por aqui.", "Bem vindo a Riverviews, aqui ta só o pó da rabiola mas é bem bonito.", "Isso aqui é um observador, se tu quiser dar uma olhada na vista esteja a vontade", "mas primeiro tu precisa de uma moeda.", "Eu aconselho tu dar uma olhada no predio rosa aqui do lado, tem umas coisas bacanas lá.."] 
+    dialogue: ["Opa bom dia, tu deve ser novo por aqui.", "Bem vindo a Riverviews", "aqui ta só o pó da rabiola mas é bem bonito.", "Isso aqui é um observador, fique a vontade pra usar", "mas primeiro tu precisa de uma moeda.", "Eu aconselho tu dar uma olhada no predio rosa aqui do lado", "tem umas coisas bacanas lá.."] 
   }
 ];
 
