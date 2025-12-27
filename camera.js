@@ -33,8 +33,8 @@ function calculateZoom() {
     const areaRatio = Math.sqrt(pixelArea / referenceArea);
     
     // ZOOM varia entre 2.7 e 4.2 baseado na resolução (diminuído um pouco)
-    ZOOM = 2 / areaRatio; // Era 4 / areaRatio
-    ZOOM = Math.max(1, Math.min(2.5, ZOOM)); // Era 3 e 4.5
+    ZOOM = 1.5 / areaRatio; // Era 4 / areaRatio
+    ZOOM = Math.max(0.5, Math.min(2, ZOOM)); // Era 3 e 4.5
   }
   
   // SCALE_FACTOR agora representa o quanto mais rápido tudo deve ser
@@ -57,11 +57,11 @@ function resizeCanvas() {
   // Atualiza velocidade do player baseado na escala
   if (player) {
     // Velocidade base diferente para mobile e desktop
-    const baseSpeed = window.isMobile ? 3.1 : 2.1; // Mobile 50% mais rápido
+    const baseSpeed = window.isMobile ? 3.1 : 5.5; // Mobile 50% mais rápido
     player.speed = baseSpeed * SCALE_FACTOR;
     
     // Frame delay inversamente proporcional (quanto menor a tela, mais rápido a animação)
-    const baseFrameDelay = window.isMobile ? 5 : 8; // Animação mais rápida no mobile
+    const baseFrameDelay = window.isMobile ? 5 : 4; // Animação mais rápida no mobile
     player.frameDelay = Math.max(5, Math.round(baseFrameDelay / SCALE_FACTOR));
     
     console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);

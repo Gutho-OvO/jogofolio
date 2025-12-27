@@ -119,9 +119,24 @@ function update() {
     updatePlayer();
 }
 
-function loop() {
-    update();
-    draw();
+const TARGET_FPS = 60;
+const FRAME_TIME = 1000 / TARGET_FPS; // ~16.67ms por frame
+let lastFrameTime = 0;
+let deltaTime = 0;
+
+function loop(currentTime) {
+    // Calcula o tempo desde o último frame
+    deltaTime = currentTime - lastFrameTime;
+    
+    // Só atualiza se passou tempo suficiente
+    if (deltaTime >= FRAME_TIME) {
+        // Ajusta para múltiplos exatos do frame time
+        lastFrameTime = currentTime - (deltaTime % FRAME_TIME);
+        
+        update();
+        draw();
+    }
+    
     requestAnimationFrame(loop);
 }
 
@@ -139,6 +154,7 @@ function start() {
     player.x = spawnPoint.x;
     player.y = spawnPoint.y;
 
+    // Inicia o loop com timestamp
     requestAnimationFrame(loop);
 }
 
