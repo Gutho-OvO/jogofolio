@@ -29,7 +29,10 @@ function draw() {
         activeMap = roomBackImg;
     }
     else if (currentMap === "cinema") {
-        activeMap = cinemaSalaImg;
+        // No cinema: desenha fundo preto
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        activeMap = null; // Cadeiras serão desenhadas depois, na parte de baixo
     }
 
     if (activeMap) {
@@ -46,24 +49,41 @@ function draw() {
         );
     }
 
-    // 2. PLAYER (não desenha no cinema quando está assistindo)
-    if (!(currentMap === "cinema" && cinemaState === "watching")) {
-        const row = directionMap[player.direction];
-        const sx = player.frame * 32;
-        const sy = row * 32;
-
-        ctx.drawImage(
-            playerImg,
-            sx,
-            sy,
-            32,
-            32,
-            Math.floor(player.x - camX),
-            Math.floor(player.y - camY),
-            32,
-            32
+    // 🎬 DESENHA CADEIRAS DO CINEMA (na parte inferior, atrás do player)
+    if (currentMap === "cinema" && cinemaSalaImg.complete) {
+        // Cadeiras ocupam a parte inferior da tela (60% de baixo para cima)
+        const chairsStartY = canvas.height * 0.65; // Começa em 60% da altura
+        const chairsHeight = canvas.height - chairsStartY;
+        
+        // Mantém proporção da imagem
+        const ratio = Math.min(
+            canvas.width / cinemaSalaImg.width,
+            chairsHeight / cinemaSalaImg.height
         );
+        
+        const w = cinemaSalaImg.width * ratio;
+        const h = cinemaSalaImg.height * ratio;
+        const chairsX = (canvas.width - w) / 2;
+        
+        ctx.drawImage(cinemaSalaImg, chairsX, chairsStartY, w, h);
     }
+
+    // 2. PLAYER (sempre desenha, inclusive no cinema)
+    const row = directionMap[player.direction];
+    const sx = player.frame * 32;
+    const sy = row * 32;
+
+    ctx.drawImage(
+        playerImg,
+        sx,
+        sy,
+        32,
+        32,
+        Math.floor(player.x - camX),
+        Math.floor(player.y - camY),
+        32,
+        32
+    );
 
     if (currentMap === "city") {
         // 3. OBJETOS DO MAPA
@@ -197,18 +217,44 @@ function drawUI() {
 function drawDialogue() {
     if (!currentDialogue) return;
 
+    const isMobile = window.isMobile;
+    const isPortrait = canvas.height > canvas.width;
+    
+    // Ajustes responsivos baseados no dispositivo
     const padding = Math.max(10, canvas.width * 0.02);
-    const boxHeight = Math.min(100, canvas.height * 0.25);
-    const boxY = canvas.height - boxHeight - 10;
+    
+    // Altura do box: maior no mobile portrait
+    let boxHeight;
+    if (isMobile && isPortrait) {
+        boxHeight = Math.min(140, canvas.height * 0.3); // 30% da altura, máx 140px
+    } else if (isMobile) {
+        boxHeight = Math.min(100, canvas.height * 0.25); // 25% no mobile landscape
+    } else {
+        boxHeight = Math.min(100, canvas.height * 0.2); // 20% no desktop
+    }
+    
+    const boxY = canvas.height - boxHeight - padding;
 
+    // Borda branca
     ctx.fillStyle = "white";
     ctx.fillRect(padding - 2, boxY - 2, canvas.width - (padding * 2) + 4, boxHeight + 4);
+    
+    // Fundo preto
     ctx.fillStyle = "black";
     ctx.fillRect(padding, boxY, canvas.width - (padding * 2), boxHeight);
 
     ctx.fillStyle = "white";
     
-    const fontSize = Math.max(10, canvas.height * 0.022);
+    // Tamanho da fonte: maior no mobile
+    let fontSize;
+    if (isMobile && isPortrait) {
+        fontSize = Math.max(14, canvas.height * 0.028); // Maior no mobile vertical
+    } else if (isMobile) {
+        fontSize = Math.max(12, canvas.height * 0.024); // Mobile horizontal
+    } else {
+        fontSize = Math.max(10, canvas.height * 0.022); // Desktop
+    }
+    
     ctx.font = `${fontSize}px 'Courier New', monospace`;
     ctx.textAlign = "left";
     
@@ -219,25 +265,44 @@ function drawDialogue() {
     const words = text.split(' ');
     let line = '';
     let y = boxY + padding + fontSize;
+    const lineHeight = fontSize + 4;
+    const maxLines = Math.floor((boxHeight - padding * 2 - 20) / lineHeight); // Espaço para o hint
+    let lineCount = 0;
     
     for (let word of words) {
         const testLine = line + word + ' ';
         const metrics = ctx.measureText(testLine);
         
         if (metrics.width > maxWidth && line !== '') {
-            ctx.fillText(line, padding + 10, y);
-            line = word + ' ';
-            y += fontSize + 4;
+            if (lineCount < maxLines) {
+                ctx.fillText(line, padding + 10, y);
+                line = word + ' ';
+                y += lineHeight;
+                lineCount++;
+            } else {
+                // Trunca se passar do limite
+                ctx.fillText(line + '...', padding + 10, y);
+                break;
+            }
         } else {
             line = testLine;
         }
     }
-    ctx.fillText(line, padding + 10, y);
     
-    const hintSize = Math.max(8, canvas.height * 0.016);
+    // Última linha
+    if (lineCount < maxLines && line !== '') {
+        ctx.fillText(line, padding + 10, y);
+    }
+    
+    // Hint "Aperte E" - posicionado no canto, não sobrepondo o texto
+    const hintSize = Math.max(9, fontSize * 0.7); // 70% do tamanho do texto
     ctx.font = `${hintSize}px Arial`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)"; // Levemente transparente
     ctx.textAlign = "right";
-    ctx.fillText("Aperte [E] para continuar...", canvas.width - padding - 10, boxY + boxHeight - 10);
+    
+    const hintY = boxY + boxHeight - padding - 5;
+    const hintText = isMobile ? "[E] →" : "Aperte [E] para continuar...";
+    ctx.fillText(hintText, canvas.width - padding - 10, hintY);
 }
 
 function drawFades() {

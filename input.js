@@ -66,29 +66,6 @@ window.addEventListener("keydown", e => {
             return;
         }
 
-        // 🎬 ENTRAR NO CINEMA
-        if (
-            currentMap === "building" &&
-            cinemaState === "closed" &&
-            isPlayerNear(player, cinemaArea)
-        ) {
-            currentMap = "cinema";
-            cinemaState = "watching";
-
-            player.x = cinemaSpawn.x;
-            player.y = cinemaSpawn.y;
-
-            cinemaOverlay.style.display = "flex";
-            cinemaIframe.src = CINEMA_YOUTUBE_URL;
-            
-            // Mostra botão de fechar no mobile
-            if (window.isMobile && window.toggleCinemaCloseBtn) {
-                window.toggleCinemaCloseBtn(true);
-            }
-
-            return;
-        }
-
         // 🚪 SAÍDA CINEMA → PRÉDIO (pressionar E)
         if (currentMap === "cinema") {
             cinemaIframe.src = "";

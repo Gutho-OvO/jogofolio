@@ -1,10 +1,7 @@
 // ===== CONTROLES MOBILE =====
 
-// Detecta se é mobile
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 // Cria os botões de controle
-if (isMobile) {
+if (window.isMobile) {
     createMobileControls();
 }
 

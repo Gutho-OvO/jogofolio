@@ -12,15 +12,26 @@ let ZOOM = 4;
 function calculateZoom() {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
+  const isPortrait = screenHeight > screenWidth; // Detecta orientação
   
   if (window.isMobile) {
-    // Mobile: zoom menor para ver mais do mapa
-    if (screenWidth < 400) {
-      ZOOM = 2.5;
-    } else if (screenWidth < 600) {
-      ZOOM = 3;
+    // Mobile: zoom menor para ver mais do mapa e UI maior
+    if (isPortrait) {
+      // Modo retrato (vertical) - zoom ainda menor para UI maior
+      if (screenWidth < 400) {
+        ZOOM = 2;
+      } else if (screenWidth < 600) {
+        ZOOM = 2.3;
+      } else {
+        ZOOM = 2.8;
+      }
     } else {
-      ZOOM = 3.5;
+      // Modo paisagem (horizontal)
+      if (screenWidth < 600) {
+        ZOOM = 2.8;
+      } else {
+        ZOOM = 3.2;
+      }
     }
   } else {
     // Desktop: zoom padrão

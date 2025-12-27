@@ -4,8 +4,7 @@ const ctx = canvas.getContext("2d");
 const cinemaOverlay = document.getElementById("cinemaOverlay");
 const cinemaIframe  = document.getElementById("cinemaIframe");
 
-const CINEMA_YOUTUBE_URL =
-"https://www.youtube.com/embed/yrFZcAA7M4k?si=CUKCJKDKnhYBQRYx";
+const CINEMA_YOUTUBE_URL = "https://www.youtube.com/embed/yrFZcAA7M4k?si=CUKCJKDKnhYBQRYx";
 
 // Estados do Jogo
 window.teleportFading = false;
@@ -13,7 +12,7 @@ window.teleportFadeOpacity = 0;
 window.teleportStep = ""; 
 window.teleportWaitTime = 0;
 window.isTelescopeOpen = false;
-window.isComputerOpen = false; // NOVO
+window.isComputerOpen = false;
 window.currentDialogue = null;
 window.dialogueIndex = 0;
 window.playerHasCoin = false;
@@ -59,6 +58,28 @@ function update() {
 
     if (isTelescopeOpen || isComputerOpen) return;
 
+    // 🎬 ENTRADA AUTOMÁTICA NO CINEMA (sem pressionar E)
+    if (currentMap === "building" && 
+        cinemaState === "closed" && 
+        isInsideArea(player, cinemaArea)) {
+        
+        currentMap = "cinema";
+        cinemaState = "watching";
+
+        player.x = cinemaSpawn.x;
+        player.y = cinemaSpawn.y;
+
+        cinemaOverlay.style.display = "flex";
+        cinemaIframe.src = CINEMA_YOUTUBE_URL;
+        
+        // Mostra botão de fechar no mobile
+        if (window.isMobile && window.toggleCinemaCloseBtn) {
+            window.toggleCinemaCloseBtn(true);
+        }
+        
+        return;
+    }
+
     // Lógica de Teleporte
     if (!teleportFading && isInsideArea(player, teleportArea)) {
         teleportFading = true;
@@ -95,7 +116,7 @@ function update() {
 
 function loop() {
     update();
-    draw(); // Esta função está no render.js
+    draw();
     requestAnimationFrame(loop);
 }
 
@@ -130,19 +151,14 @@ canvas.addEventListener("click", (e) => {
     const clickX = (e.clientX - rect.left) * scaleX;
     const clickY = (e.clientY - rect.top) * scaleY;
 
-    console.log("Clique detectado em:", clickX, clickY); // DEBUG
-
     // Verifica se clicou em algum ícone
     computerIcons.forEach(icon => {
-        console.log("Verificando ícone:", icon.label, "em", icon.x, icon.y, icon.width, icon.height); // DEBUG
-        
         if (
             clickX >= icon.x &&
             clickX <= icon.x + icon.width &&
             clickY >= icon.y &&
             clickY <= icon.y + icon.height
         ) {
-            console.log("✅ Clicou no ícone:", icon.label, "URL:", icon.url); // DEBUG
             window.open(icon.url, "_blank");
         }
     });
