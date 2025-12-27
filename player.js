@@ -14,7 +14,7 @@ const player = {
     moving: false
 };
 
-const spawnPoint = { x: 1700, y: 964 };
+const spawnPoint = { x: 500, y: 964 };
 
 function isInsideArea(player, area) {
   return (
