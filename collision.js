@@ -216,7 +216,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://github.com", // COLOQUE SEU LINK AQUI
+    url: "https://gutho-ovo.github.io/Site-Promocional/", // COLOQUE SEU LINK AQUI
     img: icon2Img
   },
   {
@@ -225,7 +225,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://www.youtube.com", // COLOQUE SEU LINK AQUI
+    url: "https://gutho-ovo.github.io/Galeria-Responsiva/", // COLOQUE SEU LINK AQUI
     img: icon3Img
   },
   {
@@ -234,7 +234,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://www.linkedin.com", // COLOQUE SEU LINK AQUI
+    url: "https://www.youtube.com/watch?v=ttEmpU6SiXg", // COLOQUE SEU LINK AQUI
     img: icon4Img
   },
   {
@@ -243,7 +243,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://twitter.com", // COLOQUE SEU LINK AQUI
+    url: "https://www.youtube.com/watch?v=yrFZcAA7M4k&t=1s", // COLOQUE SEU LINK AQUI
     img: icon5Img
   }
 ];
