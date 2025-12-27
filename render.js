@@ -386,110 +386,87 @@ function drawTelescopeView() {
 }
 
 function drawComputerScreen() {
-    ctx.fillStyle = "#1a1a2e";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Barra superior responsiva
-    const headerHeight = Math.max(30, canvas.height * 0.06);
-    ctx.fillStyle = "#16213e";
-    ctx.fillRect(0, 0, canvas.width, headerHeight);
+    // 🖥️ Desenha a imagem de fundo do computador
+    if (computerScreenImg.complete) {
+        // Calcula dimensões mantendo proporção
+        const ratio = Math.min(
+            canvas.width / computerScreenImg.width,
+            canvas.height / computerScreenImg.height
+        );
+        
+        const imgWidth = computerScreenImg.width * ratio;
+        const imgHeight = computerScreenImg.height * ratio;
+        const imgX = (canvas.width - imgWidth) / 2;
+        const imgY = (canvas.height - imgHeight) / 2;
+        
+        // Desenha a imagem do computador
+        ctx.drawImage(computerScreenImg, imgX, imgY, imgWidth, imgHeight);
+    }
     
-    // Título responsivo
+    // Hint de fechar (sobre a imagem)
+    const hintSize = Math.max(10, canvas.height * 0.02);
     ctx.fillStyle = "#ffffff";
-    const titleSize = Math.max(12, canvas.height * 0.025);
-    ctx.font = `bold ${titleSize}px Arial`;
-    ctx.textAlign = "left";
-    ctx.fillText("💻 Meu Computador", 10, headerHeight / 2 + titleSize / 3);
-
-    // Botão fechar responsivo
-    const btnSize = Math.min(40, headerHeight - 10);
-    ctx.fillStyle = "#ff4757";
-    ctx.fillRect(canvas.width - btnSize - 10, (headerHeight - btnSize) / 2, btnSize, btnSize * 0.6);
-    ctx.fillStyle = "#ffffff";
-    const btnTextSize = Math.max(10, btnSize * 0.3);
-    ctx.font = `bold ${btnTextSize}px Arial`;
-    ctx.textAlign = "center";
-    ctx.fillText("✕", canvas.width - btnSize / 2 - 10, headerHeight / 2 + btnTextSize / 3);
-    
-    // Hint de fechar
-    const hintSize = Math.max(8, canvas.height * 0.016);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = `${hintSize}px Arial`;
+    ctx.font = `bold ${hintSize}px Arial`;
     ctx.textAlign = "right";
-    const hintText = window.isMobile ? "[E]" : "Pressione [E] para fechar";
-    ctx.fillText(hintText, canvas.width - 10, canvas.height - 10);
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+    ctx.shadowBlur = 4;
+    const hintText = window.isMobile ? "[E] Fechar" : "Pressione [E] para fechar";
+    ctx.fillText(hintText, canvas.width - 15, canvas.height - 15);
+    ctx.shadowBlur = 0;
 
-    // Layout dos ícones responsivo
+    // 🎯 Layout dos ícones - GRID 3x2 (3 na primeira linha, 2 na segunda)
     const isMobile = window.isMobile;
-    const isPortrait = canvas.height > canvas.width;
     
-    // Calcula tamanhos baseado na tela
-    let iconWidth, iconHeight, iconSpacing, startY;
+    // Calcula tamanhos dos ícones baseado na tela
+    let iconSize, iconSpacing, startY;
     
     if (isMobile) {
-        if (isPortrait) {
-            // Mobile vertical: ícones menores, empilhados verticalmente
-            iconWidth = Math.min(80, canvas.width * 0.25);
-            iconHeight = iconWidth * 1.2;
-            iconSpacing = canvas.width * 0.05;
-            startY = headerHeight + canvas.height * 0.1;
-        } else {
-            // Mobile horizontal: ícones em linha
-            iconWidth = Math.min(70, canvas.width * 0.18);
-            iconHeight = iconWidth * 1.2;
-            iconSpacing = canvas.width * 0.03;
-            startY = headerHeight + canvas.height * 0.15;
-        }
+        iconSize = Math.min(60, canvas.width * 0.15);
+        iconSpacing = canvas.width * 0.08;
+        startY = canvas.height * 0.25;
     } else {
-        // Desktop: layout original mas escalado
-        iconWidth = Math.min(100, canvas.width * 0.12);
-        iconHeight = iconWidth * 1.25;
-        iconSpacing = canvas.width * 0.05;
-        startY = headerHeight + canvas.height * 0.12;
+        iconSize = Math.min(80, canvas.width * 0.08);
+        iconSpacing = canvas.width * 0.06;
+        startY = canvas.height * 0.3;
     }
 
-    // Posiciona os ícones
-    const totalWidth = (iconWidth * 3) + (iconSpacing * 2);
-    let startX = (canvas.width - totalWidth) / 2;
-    
-    // Se for mobile portrait, empilha verticalmente
-    if (isMobile && isPortrait) {
-        startX = (canvas.width - iconWidth) / 2;
-    }
-
+    // Desenha os ícones em formato 3-2
     computerIcons.forEach((icon, index) => {
-        let iconX, iconY;
+        let row, col;
         
-        if (isMobile && isPortrait) {
-            // Vertical: um embaixo do outro
-            iconX = startX;
-            iconY = startY + (index * (iconHeight + iconSpacing));
+        if (index < 3) {
+            // Primeira linha: 3 ícones
+            row = 0;
+            col = index;
         } else {
-            // Horizontal: lado a lado
-            iconX = startX + (index * (iconWidth + iconSpacing));
-            iconY = startY;
+            // Segunda linha: 2 ícones (centralizados)
+            row = 1;
+            col = index - 3;
         }
+        
+        // Calcula posição X baseado na linha
+        let iconX;
+        if (row === 0) {
+            // Primeira linha: 3 ícones
+            const totalWidth = (iconSize * 3) + (iconSpacing * 2);
+            iconX = (canvas.width - totalWidth) / 2 + (col * (iconSize + iconSpacing));
+        } else {
+            // Segunda linha: 2 ícones centralizados
+            const totalWidth = (iconSize * 2) + iconSpacing;
+            iconX = (canvas.width - totalWidth) / 2 + (col * (iconSize + iconSpacing));
+        }
+        
+        const iconY = startY + (row * (iconSize + iconSpacing));
         
         // Atualiza posições para detecção de clique
         icon.x = iconX;
         icon.y = iconY;
-        icon.width = iconWidth;
-        icon.height = iconHeight;
+        icon.width = iconSize;
+        icon.height = iconSize;
         
-        // Fundo do ícone
-        ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-        ctx.fillRect(iconX, iconY, iconWidth, iconHeight);
-
-        // Emoji/Ícone - tamanho responsivo
-        const emojiSize = Math.max(30, iconWidth * 0.5);
-        ctx.font = `${emojiSize}px Arial`;
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(icon.icon, iconX + iconWidth / 2, iconY + iconHeight * 0.45);
-
-        // Label - tamanho responsivo
-        const labelSize = Math.max(10, iconWidth * 0.15);
-        ctx.font = `${labelSize}px Arial`;
-        ctx.fillText(icon.label, iconX + iconWidth / 2, iconY + iconHeight - iconHeight * 0.15);
+        // Desenha o ícone
+        if (icon.img && icon.img.complete) {
+            ctx.drawImage(icon.img, iconX, iconY, iconSize, iconSize);
+        }
     });
 }

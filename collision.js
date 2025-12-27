@@ -199,37 +199,52 @@ const telescopeObj = { x: 1409, y: 682, width: 15, height: 16 };
 // ===== COMPUTADOR =====
 const computerObj = { x: 412, y: 297, width: 5, height: 5 };
 
-// Ícones do computador (posição na tela do computador)
+// Ícones do computador (posição será calculada dinamicamente no render)
 const computerIcons = [
   {
     id: "icon1",
-    x: 100,
-    y: 80,
-    width: 80,
-    height: 100,
-    label: "Portfolio",
-    url: "https://gutho-ovo.github.io/Pagina-Pessoal/", // Substitua pelo seu link
-    icon: "📁"
+    x: 0, // Será calculado
+    y: 0,
+    width: 0,
+    height: 0,
+    url: "https://gutho-ovo.github.io/Pagina-Pessoal/", // COLOQUE SEU LINK AQUI
+    img: icon1Img
   },
   {
     id: "icon2",
-    x: 220,
-    y: 80,
-    width: 80,
-    height: 100,
-    label: "GitHub",
-    url: "https://github.com", // Substitua pelo seu link
-    icon: "💻"
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    url: "https://github.com", // COLOQUE SEU LINK AQUI
+    img: icon2Img
   },
   {
     id: "icon3",
-    x: 340,
-    y: 80,
-    width: 80,
-    height: 100,
-    label: "abluble",
-    url: "https://www.youtube.com/watch?v=Bu7muZaoTUQ", // Substitua pelo seu link
-    icon: "💼"
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    url: "https://www.youtube.com", // COLOQUE SEU LINK AQUI
+    img: icon3Img
+  },
+  {
+    id: "icon4",
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    url: "https://www.linkedin.com", // COLOQUE SEU LINK AQUI
+    img: icon4Img
+  },
+  {
+    id: "icon5",
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    url: "https://twitter.com", // COLOQUE SEU LINK AQUI
+    img: icon5Img
   }
 ];
 

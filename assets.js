@@ -49,9 +49,27 @@ buildingFrontImg.src = "assets/decoracao_dentro.png";
 const cinemaSalaImg = new Image();
 cinemaSalaImg.src = "assets/sala_cinema.png";
 
+const computerScreenImg = new Image();
+computerScreenImg.src = "assets/computador.png";
+
+const icon1Img = new Image();
+icon1Img.src = "assets/icone1.png";
+
+const icon2Img = new Image();
+icon2Img.src = "assets/icone2.png";
+
+const icon3Img = new Image();
+icon3Img.src = "assets/icone3.png";
+
+const icon4Img = new Image();
+icon4Img.src = "assets/icone4.png";
+
+const icon5Img = new Image();
+icon5Img.src = "assets/icone5.png";
+
 
 // controle de load
-const TOTAL_ASSETS = 16;
+const TOTAL_ASSETS = 22;
 let assetsLoaded = 0;
 
 function assetLoaded() {
@@ -80,3 +98,9 @@ roomBackImg.onload = assetLoaded;
 roomFrontImg.onload = assetLoaded;
 buildingFrontImg.onload = assetLoaded;
 cinemaSalaImg.onload = assetLoaded;
+computerScreenImg.onload = assetLoaded;
+icon1Img.onload = assetLoaded;
+icon2Img.onload = assetLoaded;
+icon3Img.onload = assetLoaded;
+icon4Img.onload = assetLoaded;
+icon5Img.onload = assetLoaded;
