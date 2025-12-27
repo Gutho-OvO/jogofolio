@@ -4,7 +4,7 @@ const player = {
     y: 0,
     width: 32,
     height: 32,
-    speed: 1.7, // Velocidade base - será ajustada dinamicamente
+    speed: 1.8, // Velocidade base - será ajustada dinamicamente
 
 
     direction: "down",
