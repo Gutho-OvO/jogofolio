@@ -4,7 +4,7 @@ const keys = {};
 window.addEventListener("keydown", e => {
     keys[e.key.toLowerCase()] = true;
 
-    if (e.key.toLowerCase() === "e" && !isFading) {
+    if (e.key.toLowerCase() === "e" && !isFading && !mapTransitionFading) { 
 
         //  Avança diálogo
         if (currentDialogue) {
@@ -32,37 +32,53 @@ window.addEventListener("keydown", e => {
 
         if (interacted) return;
 
-        //  PORTAS CIDADE → PRÉDIO
+        // PORTAS CIDADE → PRÉDIO 
         buildingDoors.forEach(door => {
             if (currentMap === "city" && isPlayerNear(player, door)) {
-                currentMap = door.targetMap;
-                player.x = door.spawn.x;
-                player.y = door.spawn.y;
+                mapTransitionFading = true;
+                mapTransitionStep = "out";
+                mapTransitionData = {
+                    targetMap: door.targetMap,
+                    spawnX: door.spawn.x,
+                    spawnY: door.spawn.y
+                };
             }
         });
 
-        //  SAÍDA DO PRÉDIO → CIDADE
+        // SAÍDA DO PRÉDIO → CIDADE 
         buildingExitDoors.forEach(door => {
             if (currentMap === "building" && isPlayerNear(player, door)) {
-                currentMap = door.targetMap;
-                player.x = door.spawn.x;
-                player.y = door.spawn.y;
+                mapTransitionFading = true;
+                mapTransitionStep = "out";
+                mapTransitionData = {
+                    targetMap: door.targetMap,
+                    spawnX: door.spawn.x,
+                    spawnY: door.spawn.y
+                };
             }
         });
 
-        //  PORTA PRÉDIO → SALA
+        // PORTA PRÉDIO → SALA 
         if (currentMap === "building" && isPlayerNear(player, roomDoor)) {
-            currentMap = roomDoor.targetMap;
-            player.x = roomDoor.spawn.x;
-            player.y = roomDoor.spawn.y;
+            mapTransitionFading = true;
+            mapTransitionStep = "out";
+            mapTransitionData = {
+                targetMap: roomDoor.targetMap,
+                spawnX: roomDoor.spawn.x,
+                spawnY: roomDoor.spawn.y
+            };
             return;
         }
 
-        //  SAÍDA SALA → PRÉDIO
+        // SAÍDA SALA → PRÉDIO 
         if (currentMap === "room" && isPlayerNear(player, roomExitDoor)) {
-            currentMap = roomExitDoor.targetMap;
-            player.x = roomExitDoor.spawn.x;
-            player.y = roomExitDoor.spawn.y;
+            mapTransitionFading = true;
+            mapTransitionStep = "out";
+            mapTransitionData = {
+                targetMap: roomExitDoor.targetMap,
+                spawnX: roomExitDoor.spawn.x,
+                spawnY: roomExitDoor.spawn.y
+            };
             return;
         }
 

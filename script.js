@@ -21,6 +21,10 @@ window.isFading = false;
 window.fadeTarget = "";
 window.currentMap = "city";
 window.cinemaState = "closed"; 
+window.mapTransitionFading = false;
+window.mapTransitionOpacity = 0;
+window.mapTransitionStep = "";
+window.mapTransitionData = null; 
 
 // Funções de utilidade
 function isPlayerNear(p, obj) {
@@ -39,6 +43,35 @@ function update() {
     // Velocidade de fade proporcional e mais rápida no mobile
     const baseFadeSpeed = window.isMobile ? 0.08 : 0.05;
     const fadeSpeed = baseFadeSpeed * (SCALE_FACTOR || 1);
+
+    // LÓGICA DE FADE PARA TRANSIÇÃO DE MAPAS
+    if (mapTransitionFading) {
+        if (mapTransitionStep === "out") {
+            // Escurece a tela
+            mapTransitionOpacity += fadeSpeed;
+            if (mapTransitionOpacity >= 1) {
+                mapTransitionOpacity = 1;
+                
+                // TROCA O MAPA E TELEPORTA O PLAYER (enquanto tela está preta)
+                if (mapTransitionData) {
+                    currentMap = mapTransitionData.targetMap;
+                    player.x = mapTransitionData.spawnX;
+                    player.y = mapTransitionData.spawnY;
+                }
+                
+                mapTransitionStep = "in";
+            }
+        } else if (mapTransitionStep === "in") {
+            // Clareia a tela (player já está no novo mapa)
+            mapTransitionOpacity -= fadeSpeed;
+            if (mapTransitionOpacity <= 0) {
+                mapTransitionOpacity = 0;
+                mapTransitionFading = false;
+                mapTransitionData = null;
+            }
+        }
+        return; // Bloqueia outras atualizações durante a transição
+    }
 
     // Lógica de Fade do Telescopio
     if (isFading) {
@@ -83,7 +116,7 @@ function update() {
         return;
     }
 
-    // Logica de Teleporte
+    // LÓGICA DE TELEPORTE CORRIGIDA
     if (!teleportFading && isInsideArea(player, teleportArea)) {
         teleportFading = true;
         teleportStep = "out";
@@ -94,16 +127,15 @@ function update() {
             teleportFadeOpacity += fadeSpeed;
             if (teleportFadeOpacity >= 1) {
                 teleportFadeOpacity = 1;
+                player.x = teleportTarget.x;
+                player.y = teleportTarget.y;
                 teleportStep = "wait";
                 teleportWaitTime = 0;
             }
         } else if (teleportStep === "wait") {
             teleportWaitTime++;
-            // Tempo de espera proporcional
-            const waitFrames = Math.round(180 * (SCALE_FACTOR || 1));
+            const waitFrames = Math.round(30 * (SCALE_FACTOR || 1));
             if (teleportWaitTime >= waitFrames) {
-                player.x = teleportTarget.x;
-                player.y = teleportTarget.y;
                 teleportStep = "in";
             }
         } else if (teleportStep === "in") {

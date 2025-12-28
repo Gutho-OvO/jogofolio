@@ -62,6 +62,10 @@ function resizeCanvas() {
 }
 
 window.updateCamera = function() {
+  if (mapTransitionFading) {
+    return; // Mantém a câmera parada durante o fade
+  }
+
   // No cinema, a câmera fica fixa
   if (currentMap === "cinema") {
     camera.x = 0;
@@ -85,5 +89,3 @@ window.updateCamera = function() {
   camera.x = Math.max(0, Math.min(camera.x, mapWidth - camera.width));
   camera.y = Math.max(0, Math.min(camera.y, mapHeight - camera.height));
 }
-
-window.addEventListener("resize", resizeCanvas);

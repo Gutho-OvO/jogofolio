@@ -357,6 +357,11 @@ function drawFades() {
         ctx.fillStyle = `rgba(0, 0, 0, ${teleportFadeOpacity})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
+
+    if (mapTransitionOpacity > 0) {
+        ctx.fillStyle = `rgba(0, 0, 0, ${mapTransitionOpacity})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 function drawTelescopeView() {
