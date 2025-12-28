@@ -16,7 +16,7 @@ function draw() {
         "down-right": 7
     };
 
-    // 1. FUNDO
+    // 1. fundo
     let activeMap = null;
 
     if (currentMap === "city") {
@@ -49,21 +49,18 @@ function draw() {
         );
     }
 
-    // 🎬 DESENHA CADEIRAS DO CINEMA (proporcional e adaptativo)
+    // cadeiras do cinema (nao tao mais aparecendo)
     if (currentMap === "cinema" && cinemaSalaImg.complete) {
-        // Posição das cadeiras baseada na altura do canvas
-        // Desktop (3440x1440 / ZOOM 4) → chairsStartY ≈ 65% 
-        // Mobile → ajusta automaticamente
         
         const isMobile = window.isMobile;
         let chairsStartY, chairsHeight;
         
         if (isMobile) {
-            // Mobile: cadeiras na parte inferior (75-80% da tela)
+            // Mobile: cadeiras na parte inferior 
             chairsStartY = canvas.height * 0.75;
             chairsHeight = canvas.height - chairsStartY;
         } else {
-            // Desktop: cadeiras começam em ~65% da altura
+            // Desktop
             chairsStartY = canvas.height * 0.65;
             chairsHeight = canvas.height - chairsStartY;
         }
@@ -81,7 +78,7 @@ function draw() {
         ctx.drawImage(cinemaSalaImg, chairsX, chairsStartY, w, h);
     }
 
-    // 2. PLAYER (sempre desenha, DEPOIS das cadeiras, mas só no cinema se necessário)
+    // 2. player
     if (currentMap !== "cinema" || (currentMap === "cinema" && cinemaState !== "watching")) {
         const row = directionMap[player.direction];
         const sx = player.frame * 32;
@@ -101,24 +98,24 @@ function draw() {
     }
 
     if (currentMap === "city") {
-        // 3. OBJETOS DO MAPA
+        // 3. objetos do mapa
         ctx.drawImage(objectsImg, camX, camY, camera.width, camera.height, 0, 0, canvas.width, canvas.height);
 
-        // 4. CAMADA DE PRÉDIOS (Com transparência)
+        // 4. camadas do predio que ficam transparentes
         const behindBuilding = isPlayerBehindAnyBuilding(player, cityFrontAreas);
         ctx.save();
         ctx.globalAlpha = behindBuilding ? 0.3 : 1;
         ctx.drawImage(cityFront, camX, camY, camera.width, camera.height, 0, 0, canvas.width, canvas.height);
         ctx.restore();
 
-        // 5. NUVENS
+        // 5. nuvens
         const behindClouds = isPlayerBehindAnyBuilding(player, cloudsAreas);
         ctx.save();
         ctx.globalAlpha = behindClouds ? 0.3 : 1;
         ctx.drawImage(cloudsImg, camX, camY, camera.width, camera.height, 0, 0, canvas.width, canvas.height);
         ctx.restore();
 
-        // 6. NPCs
+        // 6. npcs
         npcs.forEach(npc => {
             let imgToDraw = (npc.id === "dinamico") ? getNpc4Image(npc, player) : npc.img;
             if (imgToDraw && imgToDraw.complete) {
@@ -130,17 +127,17 @@ function draw() {
         });
     }
     
-    // 🏢 CAMADA FRONTAL DO PRÉDIO (desenha por cima do player)
+    // predio que fica na frente do player
     if (currentMap === "building" && buildingFrontImg.complete) {
         ctx.drawImage(buildingFrontImg, camX, camY, camera.width, camera.height, 0, 0, canvas.width, canvas.height);
     }
     
-    // 🏠 CAMADA FRONTAL DA SALA (desenha por cima do player)
+    // mesas que ficam na frente do player na sala dos computadores
     if (currentMap === "room" && roomFrontImg.complete) {
         ctx.drawImage(roomFrontImg, camX, camY, camera.width, camera.height, 0, 0, canvas.width, canvas.height);
     }
     
-    // 🔴 DEBUG - PORTAS E BARREIRAS
+    // debug portas e barreiras
     if (window.showDebug) {
         ctx.save();
         
@@ -186,7 +183,7 @@ function draw() {
         ctx.restore();
     }
 
-    // 7. INTERFACE E OVERLAYS
+    // 7. interface e overlays
     if (playerHasCoin) drawUI();
     
     if (currentMap === "building" && isPlayerNear(player, roomDoor)) {
@@ -213,7 +210,7 @@ function draw() {
 }
 
 
-// ===== FUNÇÕES AUXILIARES =====
+// funçoes auxiliares
 
 function drawInteractionText(text, x, y, camX, camY) {
     ctx.fillStyle = "white";
@@ -291,9 +288,9 @@ function drawDialogue() {
     if (isMobile && isPortrait) {
         fontSize = Math.max(14, canvas.height * 0.028);
     } else if (isMobile) {
-        fontSize = Math.max(12, canvas.height * 0.024);
+        fontSize = Math.max(18, canvas.height * 0.028);
     } else {
-        fontSize = Math.max(10, canvas.height * 0.022);
+        fontSize = Math.max(16, canvas.height * 0.028);
     }
     
     ctx.font = `${fontSize}px 'Courier New', monospace`;
@@ -301,7 +298,6 @@ function drawDialogue() {
     
     const maxWidth = canvas.width - (padding * 4);
     
-    // Quebra de linha automática - MELHORADA
     const words = text.split(' ');
     let lines = [];
     let currentLine = '';
@@ -386,14 +382,13 @@ function drawTelescopeView() {
 }
 
 function drawComputerScreen() {
-    // 🎨 Overlay escuro semi-transparente (deixa ver o fundo do jogo)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.85)"; // Preto com 85% de opacidade
+    // Overlay escuro semi-transparente 
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)"; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // 🖥️ Desenha a imagem de fundo do computador
+    // Desenha a imagem de fundo do computador
     if (computerScreenImg.complete) {
-        // Calcula dimensões mantendo proporção - AUMENTADO MAIS
-        const scaleFactor = 1.3; // Aumenta 30% o tamanho (era 1.15)
+        const scaleFactor = 1.3; 
         const ratio = Math.min(
             canvas.width / computerScreenImg.width,
             canvas.height / computerScreenImg.height
@@ -408,7 +403,7 @@ function drawComputerScreen() {
         ctx.drawImage(computerScreenImg, imgX, imgY, imgWidth, imgHeight);
     }
     
-    // Hint de fechar (sobre a imagem)
+    // Hint de fechar 
     const hintSize = Math.max(10, canvas.height * 0.02);
     ctx.fillStyle = "#ffffff";
     ctx.font = `bold ${hintSize}px Arial`;
@@ -419,16 +414,16 @@ function drawComputerScreen() {
     ctx.fillText(hintText, canvas.width - 15, canvas.height - 15);
     ctx.shadowBlur = 0;
 
-    // 🎯 Layout dos ícones - GRID 3x2 (3 na primeira linha, 2 na segunda)
+    // Layout dos ícones 
     const isMobile = window.isMobile;
     
     // Calcula tamanhos dos ícones baseado na tela
     let iconSize, iconSpacing, startY;
     
     if (isMobile) {
-        iconSize = Math.min(55, canvas.width * 0.14); // Aumentado de 38 e 0.09
+        iconSize = Math.min(55, canvas.width * 0.14); 
         iconSpacing = canvas.width * 0.08;
-        startY = canvas.height * 0.35; // Descido de 0.18
+        startY = canvas.height * 0.35; 
     } else {
         iconSize = Math.min(50, canvas.width * 0.05);
         iconSpacing = canvas.width * 0.06;
@@ -444,7 +439,7 @@ function drawComputerScreen() {
             row = 0;
             col = index;
         } else {
-            // Segunda linha: 2 ícones (centralizados)
+            // Segunda linha: 2 ícones 
             row = 1;
             col = index - 3;
         }
@@ -456,7 +451,7 @@ function drawComputerScreen() {
             const totalWidth = (iconSize * 3) + (iconSpacing * 2);
             iconX = (canvas.width - totalWidth) / 2 + (col * (iconSize + iconSpacing));
         } else {
-            // Segunda linha: 2 ícones centralizados
+            // Segunda linha: 2 ícones 
             const totalWidth = (iconSize * 2) + iconSpacing;
             iconX = (canvas.width - totalWidth) / 2 + (col * (iconSize + iconSpacing));
         }

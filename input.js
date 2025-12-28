@@ -1,4 +1,4 @@
-// ===== CONTROLES =====
+// controles
 const keys = {};
 
 window.addEventListener("keydown", e => {
@@ -6,7 +6,7 @@ window.addEventListener("keydown", e => {
 
     if (e.key.toLowerCase() === "e" && !isFading) {
 
-        // 1. Avança diálogo
+        //  Avança diálogo
         if (currentDialogue) {
             dialogueIndex++;
             if (dialogueIndex >= currentDialogue.length) {
@@ -16,7 +16,7 @@ window.addEventListener("keydown", e => {
             return;
         }
 
-        // 2. Interação com NPC
+        //  Interação com NPC
         let interacted = false;
         npcs.forEach(npc => {
             if (isPlayerNear(player, npc)) {
@@ -32,7 +32,7 @@ window.addEventListener("keydown", e => {
 
         if (interacted) return;
 
-        // 🚪 PORTAS CIDADE → PRÉDIO
+        //  PORTAS CIDADE → PRÉDIO
         buildingDoors.forEach(door => {
             if (currentMap === "city" && isPlayerNear(player, door)) {
                 currentMap = door.targetMap;
@@ -41,7 +41,7 @@ window.addEventListener("keydown", e => {
             }
         });
 
-        // 🚪 SAÍDA DO PRÉDIO → CIDADE
+        //  SAÍDA DO PRÉDIO → CIDADE
         buildingExitDoors.forEach(door => {
             if (currentMap === "building" && isPlayerNear(player, door)) {
                 currentMap = door.targetMap;
@@ -50,7 +50,7 @@ window.addEventListener("keydown", e => {
             }
         });
 
-        // 🚪 PORTA PRÉDIO → SALA
+        //  PORTA PRÉDIO → SALA
         if (currentMap === "building" && isPlayerNear(player, roomDoor)) {
             currentMap = roomDoor.targetMap;
             player.x = roomDoor.spawn.x;
@@ -58,7 +58,7 @@ window.addEventListener("keydown", e => {
             return;
         }
 
-        // 🚪 SAÍDA SALA → PRÉDIO
+        //  SAÍDA SALA → PRÉDIO
         if (currentMap === "room" && isPlayerNear(player, roomExitDoor)) {
             currentMap = roomExitDoor.targetMap;
             player.x = roomExitDoor.spawn.x;
@@ -66,7 +66,7 @@ window.addEventListener("keydown", e => {
             return;
         }
 
-        // 🚪 SAÍDA CINEMA → PRÉDIO (pressionar E)
+        //  SAÍDA CINEMA → PRÉDIO 
         if (currentMap === "cinema") {
             cinemaIframe.src = "";
             cinemaOverlay.style.display = "none";
@@ -85,7 +85,7 @@ window.addEventListener("keydown", e => {
             return;
         }
 
-        // 3. Telescópio
+        //  Telescópio
         if (isTelescopeOpen) {
             isFading = true;
             fadeTarget = "hide";
@@ -96,7 +96,7 @@ window.addEventListener("keydown", e => {
             }
         }
 
-        // 4. Computador
+        //  Computador
         if (isComputerOpen) {
             isComputerOpen = false;
         } else if (currentMap === "room" && isPlayerNear(player, computerObj)) {
@@ -109,7 +109,7 @@ window.addEventListener("keyup", e => {
     keys[e.key.toLowerCase()] = false;
 });
 
-// ===== BOTÃO DE FECHAR CINEMA NO MOBILE =====
+// botão pra sair do cinema no mobile
 if (window.isMobile) {
     const closeCinemaBtn = document.createElement('button');
     closeCinemaBtn.id = 'close-cinema-btn';

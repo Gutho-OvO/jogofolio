@@ -1,14 +1,14 @@
-// ===== CONFIGURAÇÕES GLOBAIS =====
+// configurações globais
 
-// Detecta se é mobile de forma mais precisa
+// Detecta se é mobile
 window.isMobile = (function() {
-    // 1. Verifica o tamanho da tela PRIMEIRO
+    // 1. Verifica o tamanho da tela primeiro
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
     const maxDimension = Math.max(screenWidth, screenHeight);
     const minDimension = Math.min(screenWidth, screenHeight);
     
-    // Se a tela for muito larga (ultrawide), definitivamente é desktop
+    // Se a tela for muito larga, definitivamente é desktop
     if (screenWidth >= 2560) {
         console.log("Detectado monitor ultrawide - Desktop");
         return false;
@@ -35,7 +35,7 @@ window.isMobile = (function() {
     const ua = navigator.userAgent.toLowerCase();
     const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
     
-    // Se tem user agent mobile E tela pequena, é mobile
+    // Se tem user agent mobile e tela pequena, é mobile
     if (isMobileUA && maxDimension < 1366) {
         console.log("User agent mobile e tela pequena - Mobile");
         return true;

@@ -1,16 +1,16 @@
-// ===== PLAYER =====
+// player
 const player = {
     x: 0,
     y: 0,
     width: 32,
     height: 32,
-    speed: 1.8, // Velocidade base - será ajustada dinamicamente
+    speed: 1.8, 
 
 
     direction: "down",
     frame: 0,
     frameTimer: 0,
-    frameDelay: 10, // Frame delay base - será ajustado dinamicamente
+    frameDelay: 10, 
     moving: false
 };
 
@@ -30,7 +30,7 @@ function updatePlayer() {
     let dx = 0;
     let dy = 0;
 
-    // 🎬 RESTRIÇÃO DE MOVIMENTO NO CINEMA (apenas esquerda/direita)
+    // cinema so move direita/esquerda
     if (currentMap === "cinema") {
         if (keys["a"] || keys["arrowleft"]) dx--;
         if (keys["d"] || keys["arrowright"]) dx++;
@@ -45,7 +45,7 @@ function updatePlayer() {
 
     player.moving = dx !== 0 || dy !== 0;
 
-    // 🧭 DIREÇÃO
+    // direção
     if (player.moving) {
         // No cinema, força direção apenas horizontal
         if (currentMap === "cinema") {
@@ -64,14 +64,13 @@ function updatePlayer() {
         }
     }
 
-    // 🔄 NORMALIZA DIAGONAL
+    // andar na diagonal não fica mais rapido
     const len = Math.hypot(dx, dy);
     if (len !== 0) {
         dx /= len;
         dy /= len;
     }
 
-    // 🔮 PRÓXIMA POSIÇÃO
     const nextX = player.x + dx * player.speed;
     const nextY = player.y + dy * player.speed;
 
@@ -82,7 +81,7 @@ function updatePlayer() {
         currentMap === "room" ? roomCollisions :
         cinemaCollisions;
 
-    // 👣 HITBOX NOS PÉS (para verificação mais precisa)
+    // hitbox nos pes
     const hitboxX = {
         x: nextX + (player.width - 18) / 2,
         y: player.y + player.height - 15,
@@ -102,12 +101,12 @@ function updatePlayer() {
         player.x = nextX;
     }
 
-    // Verifica colisão no eixo Y (não aplica no cinema)
+    // Verifica colisao no eixo Y 
     if (currentMap !== "cinema" && !checkCollision(hitboxY, activeCollisions)) {
         player.y = nextY;
     }
 
-    // 🎞️ ANIMAÇÃO
+    // animaçao
     if (player.moving) {
         player.frameTimer++;
 
@@ -115,7 +114,7 @@ function updatePlayer() {
             player.frame++;
 
             if (player.frame > 4) {
-                player.frame = 1; // volta para primeiro frame andando
+                player.frame = 1; 
             }
 
             player.frameTimer = 0;

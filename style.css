@@ -9,7 +9,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: #000;
-    touch-action: none; /* Previne gestos do navegador */
+    touch-action: none;
 }
 
 canvas {
@@ -34,22 +34,20 @@ canvas {
 }
 
 #cinemaIframe {
-    /* Tamanho proporcional baseado no menor lado */
-    width: min(80vw, 142.22vh); /* 142.22vh = 80vh * 16/9 */
-    height: min(45vw, 80vh); /* Mantém proporção 16:9 */
+    
+    width: min(80vw, 142.22vh); 
+    height: min(45vw, 80vh);
     border: 3px solid #444;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
-/* Ajustes para mobile portrait */
 @media (max-width: 768px) and (orientation: portrait) {
     #cinemaIframe {
         width: 90vw;
-        height: 50.625vw; /* 16:9 de 90vw */
+        height: 50.625vw;
     }
 }
 
-/* Aviso de rotação para mobile landscape */
 #rotateWarning {
     position: fixed;
     top: 0;
@@ -89,7 +87,6 @@ canvas {
     50% { transform: rotate(90deg); }
 }
 
-/* Mostra o aviso apenas no mobile landscape */
 @media (max-width: 926px) and (orientation: landscape) {
     #rotateWarning {
         display: flex;

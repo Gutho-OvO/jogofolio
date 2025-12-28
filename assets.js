@@ -38,7 +38,7 @@ const buildingMap = new Image();
 buildingMap.src = "assets/interior_predio.png";
 
 const roomBackImg = new Image();
-roomBackImg.src = "assets/sala_computador.png"; // sua primeira imagem
+roomBackImg.src = "assets/sala_computador.png";
 
 const roomFrontImg = new Image();
 roomFrontImg.src = "assets/sala_computador_deco.png";

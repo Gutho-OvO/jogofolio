@@ -40,7 +40,7 @@ function update() {
     const baseFadeSpeed = window.isMobile ? 0.08 : 0.05;
     const fadeSpeed = baseFadeSpeed * (SCALE_FACTOR || 1);
 
-    // Lógica de Fade do Telescópio
+    // Lógica de Fade do Telescopio
     if (isFading) {
         if (fadeTarget === "open") {
             fadeOpacity += fadeSpeed;
@@ -62,7 +62,7 @@ function update() {
 
     if (isTelescopeOpen || isComputerOpen) return;
 
-    // 🎬 ENTRADA AUTOMÁTICA NO CINEMA
+    // entrar no cinema sem clicar nada
     if (currentMap === "building" && 
         cinemaState === "closed" && 
         isInsideArea(player, cinemaArea)) {
@@ -83,7 +83,7 @@ function update() {
         return;
     }
 
-    // Lógica de Teleporte
+    // Logica de Teleporte
     if (!teleportFading && isInsideArea(player, teleportArea)) {
         teleportFading = true;
         teleportStep = "out";
@@ -120,7 +120,7 @@ function update() {
 }
 
 const TARGET_FPS = 60;
-const FRAME_TIME = 1000 / TARGET_FPS; // ~16.67ms por frame
+const FRAME_TIME = 1000 / TARGET_FPS; 
 let lastFrameTime = 0;
 let deltaTime = 0;
 
@@ -128,9 +128,7 @@ function loop(currentTime) {
     // Calcula o tempo desde o último frame
     deltaTime = currentTime - lastFrameTime;
     
-    // Só atualiza se passou tempo suficiente
     if (deltaTime >= FRAME_TIME) {
-        // Ajusta para múltiplos exatos do frame time
         lastFrameTime = currentTime - (deltaTime % FRAME_TIME);
         
         update();
@@ -161,7 +159,7 @@ function start() {
 // Inicia o processo de checagem
 start();
 
-// ===== CLIQUE NO COMPUTADOR =====
+// clicar no computador
 canvas.addEventListener("click", (e) => {
     if (!isComputerOpen) return;
 

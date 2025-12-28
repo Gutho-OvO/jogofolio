@@ -1,4 +1,4 @@
-// ===== CONTROLES MOBILE =====
+// controles mobile
 
 // Cria os botões de controle
 if (window.isMobile) {
@@ -186,7 +186,7 @@ document.addEventListener('touchend', function(e) {
     lastTouchEnd = now;
 }, false);
 
-// Previne scroll no canvas
+// tira o scroll no canvas
 canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
 }, { passive: false });

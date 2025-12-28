@@ -8,7 +8,7 @@ const camera = {
 
 // Zoom e escala ajustáveis
 let ZOOM = 2.0;
-let SCALE_FACTOR = 1; // Fator de escala global baseado no zoom
+let SCALE_FACTOR = 1;
 
 function calculateZoom() {
   const screenWidth = window.innerWidth;
@@ -24,22 +24,16 @@ function calculateZoom() {
       ZOOM = 2.8;
     }
   } else {
-    // Desktop: zoom baseado na resolução para manter experiência consistente
-    // Seu monitor: 3440x1440 = área de ~4.9M pixels → ZOOM 4
-    // Notebook: 1920x1080 = área de ~2M pixels → ZOOM ajustado
-    
+
     const pixelArea = screenWidth * screenHeight;
-    const referenceArea = 3440 * 1440; // Seu monitor principal
+    const referenceArea = 3440 * 1440;
     const areaRatio = Math.sqrt(pixelArea / referenceArea);
     
-    // ZOOM varia entre 2.7 e 4.2 baseado na resolução (diminuído um pouco)
-    ZOOM = 1.5 / areaRatio; // Era 4 / areaRatio
-    ZOOM = Math.max(0.5, Math.min(2, ZOOM)); // Era 3 e 4.5
+    ZOOM = 1.5 / areaRatio; 
+    ZOOM = Math.max(0.5, Math.min(2, ZOOM)); 
   }
   
-  // SCALE_FACTOR agora representa o quanto mais rápido tudo deve ser
-  // ZOOM maior = tela menor = precisa compensar com velocidade maior
-  SCALE_FACTOR = ZOOM / 4; // Inverte a lógica anterior
+  SCALE_FACTOR = ZOOM / 4; 
   
   console.log("Resolução:", screenWidth, "x", screenHeight);
   console.log("ZOOM:", ZOOM.toFixed(2), "| SCALE_FACTOR:", SCALE_FACTOR.toFixed(2));
@@ -54,14 +48,13 @@ function resizeCanvas() {
   camera.height = canvas.height;
   ctx.imageSmoothingEnabled = false;
   
-  // Atualiza velocidade do player baseado na escala
   if (player) {
     // Velocidade base diferente para mobile e desktop
-    const baseSpeed = window.isMobile ? 3.1 : 5.5; // Mobile 50% mais rápido
+    const baseSpeed = window.isMobile ? 3.1 : 5.5;
     player.speed = baseSpeed * SCALE_FACTOR;
     
-    // Frame delay inversamente proporcional (quanto menor a tela, mais rápido a animação)
-    const baseFrameDelay = window.isMobile ? 5 : 4; // Animação mais rápida no mobile
+    // Frame delay inversamente proporcional 
+    const baseFrameDelay = window.isMobile ? 5 : 4; 
     player.frameDelay = Math.max(5, Math.round(baseFrameDelay / SCALE_FACTOR));
     
     console.log("Player speed:", player.speed.toFixed(2), "| Frame delay:", player.frameDelay);
@@ -69,7 +62,7 @@ function resizeCanvas() {
 }
 
 window.updateCamera = function() {
-  // 🎬 No cinema, a câmera fica fixa (não segue o player)
+  // No cinema, a câmera fica fixa
   if (currentMap === "cinema") {
     camera.x = 0;
     camera.y = 0;

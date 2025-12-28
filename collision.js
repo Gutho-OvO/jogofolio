@@ -1,5 +1,5 @@
-// ===== DEBUG MODE =====
-window.showDebug = false; // Mude para false para desativar o debug
+// debug aparece
+window.showDebug = false; // lembrar: colocar false para desativar o debug
 const barriers = [
   //ponte
   { x: 0, y: 0, width: 300, height: 1600 },
@@ -126,10 +126,8 @@ const buildingBarriers = [
   { x: 273, y: 538, width: 290, height: 16 },
 ];
 
-// ===== BARREIRAS DA SALA =====
+// Barreiras sala do computador
 const roomBarriers = [
-  // Adicione as barreiras da sala aqui depois
-  // Por enquanto apenas paredes básicas
   { x: 0, y: 210, width: 800, height: 20 },
   { x: 289, y: 0, width: 20, height: 600 },
   { x: 555, y: 0, width: 20, height: 600 },
@@ -162,11 +160,10 @@ const roomBarriers = [
 
 ];
 
-// ===== BARREIRAS DO CINEMA =====
-// Barreiras laterais para o player não sair da tela
+// barreiras do cinema
 const cinemaBarriers = [
   { x: 10, y: 0, width: 16, height: 9999 },      // parede esquerda
-  { x: 9999, y: 0, width: 50, height: 9999 },   // parede direita (será ajustada dinamicamente)
+  { x: 9999, y: 0, width: 50, height: 9999 },   // parede direita 
 ];
 
 // Arrays de colisões para cada mapa
@@ -196,18 +193,18 @@ const cloudsAreas = [
 
 const telescopeObj = { x: 1409, y: 682, width: 15, height: 16 };
 
-// ===== COMPUTADOR =====
+// coputador
 const computerObj = { x: 412, y: 297, width: 5, height: 5 };
 
-// Ícones do computador (posição será calculada dinamicamente no render)
+// Ícones do computador
 const computerIcons = [
   {
     id: "icon1",
-    x: 0, // Será calculado
+    x: 0, 
     y: 0,
     width: 0,
     height: 0,
-    url: "https://gutho-ovo.github.io/Pagina-Pessoal/", // COLOQUE SEU LINK AQUI
+    url: "https://gutho-ovo.github.io/Pagina-Pessoal/", 
     img: icon1Img
   },
   {
@@ -216,7 +213,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://gutho-ovo.github.io/Site-Promocional/", // COLOQUE SEU LINK AQUI
+    url: "https://gutho-ovo.github.io/Site-Promocional/", 
     img: icon2Img
   },
   {
@@ -225,7 +222,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://gutho-ovo.github.io/Galeria-Responsiva/", // COLOQUE SEU LINK AQUI
+    url: "https://gutho-ovo.github.io/Galeria-Responsiva/", 
     img: icon3Img
   },
   {
@@ -234,7 +231,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://www.youtube.com/watch?v=ttEmpU6SiXg", // COLOQUE SEU LINK AQUI
+    url: "https://www.youtube.com/watch?v=ttEmpU6SiXg", 
     img: icon4Img
   },
   {
@@ -243,7 +240,7 @@ const computerIcons = [
     y: 0,
     width: 0,
     height: 0,
-    url: "https://www.youtube.com/watch?v=yrFZcAA7M4k&t=1s", // COLOQUE SEU LINK AQUI
+    url: "https://www.youtube.com/watch?v=yrFZcAA7M4k&t=1s", 
     img: icon5Img
   }
 ];
@@ -260,7 +257,7 @@ const foregroundObjects = [
 ];
 foregroundObjects[0].img.src = "assets/city_front.png";
 
-// ===== PORTAS DO PRÉDIO =====
+// portas do predio
 const buildingDoors = [
   {
     id: "porta_esquerda",
@@ -282,7 +279,7 @@ const buildingDoors = [
   }
 ];
 
-// ===== SAÍDAS DO PRÉDIO (INTERIOR → CIDADE) =====
+// sair do predio
 const buildingExitDoors = [
   {
     id: "saida_esquerda",
@@ -304,7 +301,7 @@ const buildingExitDoors = [
   }
 ];
 
-// ===== PORTA DA SALA (PRÉDIO → SALA) =====
+// entrar na sala do computador
 const roomDoor = {
   id: "porta_sala",
   x: 251,
@@ -312,21 +309,21 @@ const roomDoor = {
   width: 24,
   height: 42,
   targetMap: "room",
-  spawn: { x: 515, y: 380 } // ajuste conforme necessário
+  spawn: { x: 515, y: 380 }
 };
 
-// ===== SAÍDA DA SALA (SALA → PRÉDIO) =====
+// sair da sala do computador
 const roomExitDoor = {
   id: "saida_sala",
   x: 550,
-  y: 378, // ajuste para onde fica a saída na sala
+  y: 378, 
   width: 5,
   height: 32,
   targetMap: "building",
-  spawn: { x: 275, y: 310 } // volta pro prédio
+  spawn: { x: 275, y: 310 }
 };
 
-// ===== PORTA DO CINEMA (PRÉDIO → CINEMA) =====
+// entrar no cinema
 const cinemaArea = {
   id: "area_cinema",
   x: 399,
@@ -337,10 +334,10 @@ const cinemaArea = {
 
 const cinemaSpawn = { x: 430, y: 285 };
 
-// ===== SAÍDA DO CINEMA (CINEMA → PRÉDIO) =====
+// sair do cinema
 const cinemaExitSpawn = { x: 399, y: 130 };
 
-// ===== FUNÇÕES DE COLISÃO =====
+// funções de colisão
 
 // Verifica se dois objetos estão colidindo (AABB)
 function isColliding(a, b) {
@@ -352,7 +349,7 @@ function isColliding(a, b) {
     );
 }
 
-// Verifica se o player está atrás de qualquer área (para transparência)
+// Verifica se o player está atrás de qualquer área 
 function isPlayerBehindAnyBuilding(player, areas) {
   for (const area of areas) {
     if (
